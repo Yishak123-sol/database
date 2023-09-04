@@ -1,3 +1,4 @@
+import 'package:database/controller/favorite.dart';
 import 'package:database/data/food_data.dart';
 import 'package:database/screens/cart.dart';
 import 'package:database/screens/favorite.dart';
@@ -12,6 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<Cart>(context);
+    final favoriteProvider = Provider.of<Favorite>(context);
     final List<Food> foodDesignList = foodItems;
     final List<Widget> foodList = [];
 
@@ -49,15 +51,20 @@ class HomePage extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                        onTap: () => print(cartProvider.cartRead()),
-                        child: const Icon(Icons.favorite_outline)),
+                        onTap: () => {
+                              favoriteProvider.favoriteWrite(food.id, food.name,
+                                  food.imageUrl, food.description, food.price),
+                            },
+                        child: !favoriteProvider.inFavorite(food.id)
+                            ? const Icon(Icons.favorite_outline)
+                            : const Icon(Icons.favorite)),
                     const SizedBox(
                       width: 20,
                     ),
                     GestureDetector(
                         onTap: () => {
                               cartProvider.cartWrite(food.id, food.name,
-                                  food.imageUrl, food.description),
+                                  food.imageUrl, food.description, food.price),
                             },
                         child: !cartProvider.inCart(food.id)
                             ? const Icon(Icons.shopping_cart_outlined)
@@ -81,7 +88,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return const CartWidget();
+                    return const FavoriteWidget();
                   },
                 ));
               },
@@ -97,7 +104,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return const Favorite();
+                    return const CartWidget();
                   },
                 ));
               },

@@ -5,12 +5,13 @@ class Cart extends ChangeNotifier {
   final _myCartBox = Hive.box('cartBox');
   String id = '';
 
-  cartWrite(id, name, imageUrl, description) {
-    Map<String, dynamic> food = {
+  cartWrite(id, name, imageUrl, description, price) {
+    Map<dynamic, dynamic> food = {
       'id': id,
       'name': name,
       'imageUrl': imageUrl,
       'description': description,
+      'price': price
     };
 
     int index = 0;

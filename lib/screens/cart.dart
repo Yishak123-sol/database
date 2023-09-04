@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Cart extends StatefulWidget {
-  const Cart({super.key});
+class CartWidget extends StatefulWidget {
+  const CartWidget({super.key});
 
   @override
-  State<Cart> createState() => _CartState();
+  State<CartWidget> createState() => _CartWidgetState();
 }
 
-class _CartState extends State<Cart> {
+class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return const Placeholder();
   }
 }

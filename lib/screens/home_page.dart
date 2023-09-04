@@ -2,12 +2,16 @@ import 'package:database/data/food_data.dart';
 import 'package:database/screens/cart.dart';
 import 'package:database/screens/favorite.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../controller/cart.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<Cart>(context);
     final List<Food> foodDesignList = foodItems;
     final List<Widget> foodList = [];
 
@@ -42,13 +46,22 @@ class HomePage extends StatelessWidget {
                     Text(food.description)
                   ],
                 ),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.favorite_outline),
-                    SizedBox(
+                    GestureDetector(
+                        onTap: () => print(cartProvider.cartRead()),
+                        child: const Icon(Icons.favorite_outline)),
+                    const SizedBox(
                       width: 20,
                     ),
-                    Icon(Icons.shopping_cart_outlined)
+                    GestureDetector(
+                        onTap: () => {
+                              cartProvider.cartWrite(food.id, food.name,
+                                  food.imageUrl, food.description),
+                            },
+                        child: !cartProvider.inCart(food.id)
+                            ? const Icon(Icons.shopping_cart_outlined)
+                            : const Icon(Icons.shopping_cart))
                   ],
                 )
               ],
@@ -68,7 +81,7 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return const Cart();
+                    return const CartWidget();
                   },
                 ));
               },
